@@ -1,0 +1,84 @@
+#include <stdio.h>
+
+int main()
+{
+	char i;
+	for (i = '!'; i <= '~'; i++) {
+		if (i != '*')
+			printf("%c ", i);
+	}
+	printf("\n");
+	return 0;
+}
+#include <stdio.h>
+#include <sys/time.h>
+
+int main()
+{
+	char c;
+	struct timeval tv;
+	while ((c = getchar_unlocked()) != EOF) {
+		gettimeofday(&tv, NULL);
+		printf("%d\t%c\n", tv.tv_usec, c);
+	}
+	return 0;
+}
+import json
+import sys
+import operator
+
+d = json.loads(sys.stdin.read())
+print json.dumps(sorted(d.iteritems(), key=operator.itemgetter(1)))
+import sys
+import string
+import json
+import os
+
+def getline():
+	return sys.stdin.readline()[:-1]
+
+def firststr(s):
+	return string.split(s, "\t")[0]
+
+if os.path.exists("dict"):
+	f = open("dict", "r")
+	times = json.loads(f.read())
+	f.close()
+	f = open("dict", "w")
+else:
+	times = dict()
+	f = open("dict", "w")
+
+nextln = getline()
+while True:
+	letters = nextln
+	if letters == "":
+		break
+	nextln = getline()
+	stack = list()
+	while firststr(nextln).isdigit() and not nextln.isdigit():
+		stack.append(nextln)
+		nextln = getline()
+	t2 = int(firststr(stack.pop()))
+	t1 = int(firststr(stack.pop()))
+	diff = t2 - t1
+	if diff > 15:
+		value = 1
+	else:
+		value = 0
+	
+	if letters in times:
+		times[letters] += value
+	else:
+		times[letters] = value
+
+f.write(json.dumps(times))
+f.close()
+#!/bin/bash
+
+for i in `seq 32 126`; do printf "\\\\x%x\\n" $i; done | echo -e `cat`
+#!/bin/bash
+
+prefix="$1"
+
+( for i in {a..z} {A..Z} {0..9} ; do echo "$prefix$i" ; /levels/level06 /home/the-flag/.password "$prefix$i"a 2>&1 | ./a.out | grep \\. ; done ) | python process.py

